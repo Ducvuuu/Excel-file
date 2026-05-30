@@ -41,7 +41,14 @@ function switchSheet(targetSheet) {
     };
   }
 
-  // 2. Clear current view (preserve chart-float divs by only clearing the table)
+  // 2. Clear current view — restore grid if leaving Notes, otherwise clear maintable
+  const notesOverlay = document.getElementById('notes-overlay');
+  const gridContainer = document.getElementById('grid-container');
+  if (notesOverlay && notesOverlay.style.display !== 'none') {
+    notesOverlay.style.display = 'none';
+    notesOverlay.innerHTML = '';
+    if (gridContainer) gridContainer.style.display = '';
+  }
   const maintableEl = document.getElementById('maintable');
   if (maintableEl) maintableEl.innerHTML = '';
 
@@ -62,9 +69,15 @@ function switchSheet(targetSheet) {
   // 5. Render target sheet
   renderers[targetSheet]();
 
-  // Reveal Notes tab on first visit to Methodology
+  // Stage 1: first visit to Outputs reveals the locked Notes tab
+  if (targetSheet === '05 — Outputs' && !state.outputsStage1Fired && !state.isNotesUnlocked) {
+    state.outputsStage1Fired = true;
+    setTimeout(() => fireNotesStage1(), 900);
+  }
+
+  // Stage 2: first visit to Methodology unlocks the Notes tab
   if (targetSheet === '06 — Methodology' && !state.isNotesUnlocked) {
-    setTimeout(() => fireNotesReveal(), 900);
+    setTimeout(() => fireNotesUnlockSequence(), 900);
   }
 
   // 5b. Re-render per-sheet comments panel

@@ -211,10 +211,8 @@ function cellCommentLookup(id) {
   return null;
 }
 
-// ── REVEAL: First visit to Methodology ──
-function fireNotesReveal() {
-  if (state.isNotesUnlocked) return;
-
+// ── STAGE 1: First visit to Outputs ──
+function fireNotesStage1() {
   const tabNotes = document.getElementById('tab-notes');
   if (!tabNotes) return;
 
@@ -229,11 +227,9 @@ function fireNotesReveal() {
   if (sb) sb.classList.add('warn-flash');
   const sl = document.getElementById('sl');
   if (sl) sl.textContent = 'SYS_WARN: ENCRYPTED OBJECT DETECTED';
-
-  setTimeout(() => fireNotesUnlockSequence(), 1200);
 }
 
-// ── UNLOCK SEQUENCE ──
+// ── STAGE 2: First visit to Methodology ──
 function fireNotesUnlockSequence() {
   if (state.isNotesUnlocked) return;
   state.isNotesUnlocked = true;
@@ -241,6 +237,12 @@ function fireNotesUnlockSequence() {
   playDecryptPing();
 
   const tabNotes = document.getElementById('tab-notes');
+  // If Stage 1 never ran (user skipped Outputs), set up locked state now
+  if (tabNotes && tabNotes.style.display === 'none') {
+    tabNotes.style.display = '';
+    tabNotes.innerHTML = `<span id="lock-icon">🔒</span><span id="secret-text">████████</span>`;
+    tabNotes.classList.add('stage-locked');
+  }
   const lockIcon = document.getElementById('lock-icon');
   const secretText = document.getElementById('secret-text');
 

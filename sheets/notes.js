@@ -1,5 +1,8 @@
 function renderNotes() {
-  document.getElementById('gridscroll').innerHTML = `
+  document.getElementById('grid-container').style.display = 'none';
+  const overlay = document.getElementById('notes-overlay');
+  overlay.style.display = '';
+  overlay.innerHTML = `
     <div class="notes-container">
       <div class="notes-meta">
         Last modified: [unknown user] — 2025-01-15  03:17
