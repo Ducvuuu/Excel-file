@@ -480,35 +480,112 @@ function drawOutputsCharts() {
   };
 })();
 
-// ── LOADING AND FADE-OUT SEQUENCE ──
+// ── OPENING SEQUENCE ──
 
-function dismissModal() {
-  const modal = document.getElementById('modal-overlay');
-  modal.style.opacity = '0';
-  setTimeout(() => {
-    modal.style.display = 'none';
-  }, 400);
+function showMoment(id) {
+  const el = document.getElementById(id);
+  el.style.transition = 'opacity 0.7s ease';
+  el.style.display = 'flex';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    el.style.opacity = '1';
+    el.style.pointerEvents = 'auto';
+  }));
 }
 
-function advanceFromQuote() {
-  const btn = document.getElementById('quote-advance-btn');
-  const quote = document.getElementById('quote-screen');
-  btn.disabled = true;
-  quote.classList.remove('active');
+function hideMoment(id, durationMs, cb) {
+  const el = document.getElementById(id);
+  el.style.transition = `opacity ${durationMs}ms ease`;
+  el.style.opacity = '0';
+  el.style.pointerEvents = 'none';
   setTimeout(() => {
-    quote.style.display = 'none';
-    const modal = document.getElementById('modal-overlay');
-    modal.style.display = 'flex';
-    setTimeout(() => modal.classList.add('active'), 50);
-    switchSheet('01 — Cover');
-  }, 1000);
+    el.style.display = 'none';
+    if (cb) cb();
+  }, durationMs);
+}
+
+function runOpeningSequence() {
+  const QUOTE = '“The trouble with Eichmann was precisely that so many were like him, and that the many were neither perverted nor sadistic, that they were, and still are, terribly and terrifyingly normal.”';
+  const words = QUOTE.split(' ');
+  const wordsEl = document.getElementById('quote-words');
+  const attrEl  = document.getElementById('quote-attr');
+
+  // Build word spans — invisible initially
+  words.forEach((word, i) => {
+    const sp = document.createElement('span');
+    sp.className = 'qw';
+    sp.textContent = (i === 0 ? '' : ' ') + word;
+    wordsEl.appendChild(sp);
+  });
+
+  // Stagger reveals: 200ms lead-in, 120ms per word
+  words.forEach((_, i) => {
+    setTimeout(() => { wordsEl.children[i].style.opacity = '1'; }, 200 + i * 120);
+  });
+
+  // Attribution: 600ms pause after last word, fades over 900ms
+  const attrAt = 200 + (words.length - 1) * 120 + 600;
+  setTimeout(() => { attrEl.style.opacity = '1'; }, attrAt);
+
+  // Hold 2500ms after attr appears, then fade out quote screen (1000ms)
+  const fadeAt = attrAt + 900 + 2500;
+  setTimeout(() => {
+    hideMoment('moment-quote', 1000, () => {
+      // Brief pure-black pause, then moment 2
+      setTimeout(() => {
+        showMoment('moment-access');
+        // Button fades in 600ms after access text appears
+        setTimeout(() => {
+          document.getElementById('enable-editing-btn').style.opacity = '1';
+        }, 1000);
+      }, 300);
+    });
+  }, fadeAt);
+}
+
+function handleEnableEditing() {
+  document.getElementById('enable-editing-btn').disabled = true;
+  hideMoment('moment-access', 400, () => {
+    showMoment('moment-loading');
+    runLoadingSequence();
+  });
+}
+
+function runLoadingSequence() {
+  const lines = [
+    { text: 'Connecting to secure network drive...', check: true,  at: 0,    checkAt: 400 },
+    { text: 'Authenticating...',                    check: true,  at: 700,   checkAt: 300 },
+    { text: 'Access granted.',                      check: false, at: 1200              },
+    { text: 'Opening CA_PAU_DEM_2025-003_v4.1_FINAL.xlsx...', check: false, at: 1600 },
+  ];
+  const container = document.getElementById('loading-lines');
+
+  lines.forEach(ld => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.className = 'loading-line';
+      div.textContent = ld.text;
+      container.appendChild(div);
+      requestAnimationFrame(() => requestAnimationFrame(() => { div.style.opacity = '1'; }));
+      if (ld.check) {
+        setTimeout(() => {
+          div.innerHTML = ld.text + '  <span class="loading-check">✓</span>';
+        }, ld.checkAt);
+      }
+    }, ld.at);
+  });
+
+  // Render spreadsheet behind loading screen so it's ready when we reveal
+  setTimeout(() => switchSheet('01 — Cover'), 1700);
+
+  // Fade out loading screen, revealing the spreadsheet
+  setTimeout(() => hideMoment('moment-loading', 700, null), 2300);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   renderCommentsPanel();
   renderPAUGlyphs();
 
-  // Unlock the Notes tab when the final Thread 7 SR reply scrolls into view
+  // Unlock Notes tab when Thread 7 final comment scrolls into view
   const finalComment = document.getElementById('thread7-final-comment');
   if (finalComment) {
     const unlockObserver = new IntersectionObserver((entries) => {
@@ -518,4 +595,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }, { root: document.getElementById('panel-content-area'), threshold: 0.8 });
     unlockObserver.observe(finalComment);
   }
+
+  runOpeningSequence();
 });
