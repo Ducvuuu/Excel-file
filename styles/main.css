@@ -60,84 +60,229 @@ body {
   pointer-events: none;
 }
 
-/* Quote — visible immediately before JS runs */
+/* ── MOMENT 1: QUOTE ── */
 #moment-quote {
   display: flex;
   opacity: 1;
   pointer-events: auto;
-  background: radial-gradient(ellipse at 50% 46%, #1d1b1b 0%, #090909 72%);
+  background: radial-gradient(ellipse at 50% 46%, #1d1b1b 0%, #080808 72%);
   padding: 60px;
 }
 #quote-words {
-  font-family: var(--font-serif);
-  font-size: 17px;
-  line-height: 1.85;
-  color: #eeeeee;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 22px;
+  line-height: 1.9;
+  color: #d8d8d8;
   width: 90%;
-  max-width: 480px;
+  max-width: 560px;
   text-align: center;
   letter-spacing: 0.01em;
-  word-spacing: 0.05em;
 }
 .qw {
   opacity: 0;
-  transition: opacity 0.4s ease;
+  display: inline-block;
+  transform: translateY(5px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.qw.visible { opacity: 1; transform: translateY(0); }
+.qw-bold {
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 0 14px rgba(255,255,255,0.4);
+}
+.qw-italic { font-style: italic; color: #f0f0f0; }
+.qw-under {
+  text-decoration: underline;
+  text-decoration-color: rgba(255,255,255,0.3);
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1px;
 }
 #quote-attr {
-  font-family: var(--font-serif);
-  font-size: 12px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 15px;
   font-style: italic;
-  color: #686868;
-  margin-top: 30px;
+  color: #585858;
+  margin-top: 36px;
   text-align: center;
   opacity: 0;
-  transition: opacity 0.9s ease;
+  transition: opacity 1s ease;
 }
 
-/* Access prompt */
+/* ── MOMENT 2: WIN11 MODAL ── */
 #moment-access {
-  background: #000000;
-  gap: 30px;
+  background: linear-gradient(135deg, #0d1117 0%, #000000 100%);
 }
-.access-text { text-align: center; line-height: 1.75; }
-.access-line {
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 12px;
-  color: #c0c0c0;
+@keyframes win11Enter {
+  from { opacity: 0; transform: scale(0.95) translateY(8px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);   }
 }
-#enable-editing-btn {
-  opacity: 0;
-  background: #d4a017;
-  color: #1a1a1a;
-  border: 1px solid #b8860b;
-  border-radius: 0;
-  padding: 5px 16px;
-  font-size: 12px;
+.win11-enter {
+  animation: win11Enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.win11-modal {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+  width: 90%;
+  max-width: 520px;
+  overflow: hidden;
+  border: 1px solid rgba(229,231,235,0.4);
   font-family: 'Segoe UI', sans-serif;
-  cursor: pointer;
+  color: #111827;
+}
+.win11-header {
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(249,250,251,0.9);
+  border-bottom: 1px solid rgba(229,231,235,0.9);
+}
+.win11-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
   letter-spacing: 0.01em;
-  transition: background 0.15s ease, opacity 0.4s ease;
 }
-#enable-editing-btn:hover { background: #b8860b; }
-#enable-editing-btn:disabled { pointer-events: none; opacity: 0.5; }
+.win11-xl-icon { width: 15px; height: 15px; color: #16a34a; flex-shrink: 0; }
+.win11-close {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: not-allowed;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+.win11-body {
+  padding: 22px 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.win11-warn-icon {
+  width: 30px;
+  height: 30px;
+  color: #d97706;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.win11-text { flex: 1; min-width: 0; }
+.win11-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 10px;
+  letter-spacing: 0.01em;
+}
+.win11-para {
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+.win11-node { font-size: 11px; color: #9ca3af; }
+.redacted-block {
+  background: #000;
+  color: #000;
+  border-radius: 2px;
+  user-select: none;
+  padding: 0 3px;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 12px;
+}
+.win11-details {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 11px;
+  color: #6b7280;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.5;
+}
+.win11-detail-val { color: #111827; font-weight: 500; }
+.win11-footer {
+  padding: 12px 20px;
+  background: rgba(249,250,251,0.6);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid #f3f4f6;
+}
+.win11-btn-secondary {
+  padding: 6px 16px;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 500;
+  color: #6b7280;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.win11-btn-primary {
+  padding: 6px 16px;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 500;
+  color: #fff;
+  background: #0f6cbd;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+.win11-btn-primary:hover { background: #0c5aa6; }
+.win11-btn-primary:active { transform: scale(0.97); }
+.win11-btn-primary:disabled { pointer-events: none; opacity: 0.6; }
 
-/* Loading state */
-#moment-loading {
-  background: #000000;
+/* ── MOMENT 3: POWERSHELL TERMINAL ── */
+#moment-terminal {
+  background: #0c0c0c;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 110px 0 0 140px;
+  overflow-y: auto;
 }
-#loading-lines { display: flex; flex-direction: column; gap: 7px; }
-.loading-line {
-  font-family: 'Courier New', monospace;
-  font-size: 11px;
-  color: #888888;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-  white-space: pre;
+.ps-wrap { padding: 24px 28px 80px; width: 100%; box-sizing: border-box; }
+.ps-header {
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 14px;
+  color: #f9f1a5;
+  margin-bottom: 18px;
+  line-height: 1.5;
 }
-.loading-check { color: #5c9c62; }
+.ps-content {
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 14px;
+  color: #cccccc;
+  line-height: 1.65;
+}
+.ps-line { display: block; margin-top: 2px; }
+.ps-green { color: #16c60c; }
+.ps-red   { color: #e74856; }
+.ps-white { color: #ffffff; }
+.ps-cursor::after {
+  content: '\2588';
+  animation: psBlink 1s step-end infinite;
+  color: #cccccc;
+}
+@keyframes psBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── MOMENT 4: WHITE FLASH ── */
+#moment-flash { background: #ffffff; }
 
 /* ── EXCEL CHROME LAYOUT ── */
 .titlebar {

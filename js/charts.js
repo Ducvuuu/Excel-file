@@ -480,11 +480,12 @@ function drawOutputsCharts() {
   };
 })();
 
-// ── OPENING SEQUENCE ──
+// -- OPENING SEQUENCE --
 
-function showMoment(id) {
+function showMoment(id, durationMs) {
+  const ms = durationMs || 700;
   const el = document.getElementById(id);
-  el.style.transition = 'opacity 0.7s ease';
+  el.style.transition = `opacity ${ms}ms ease`;
   el.style.display = 'flex';
   requestAnimationFrame(() => requestAnimationFrame(() => {
     el.style.opacity = '1';
@@ -497,95 +498,141 @@ function hideMoment(id, durationMs, cb) {
   el.style.transition = `opacity ${durationMs}ms ease`;
   el.style.opacity = '0';
   el.style.pointerEvents = 'none';
-  setTimeout(() => {
-    el.style.display = 'none';
-    if (cb) cb();
-  }, durationMs);
+  setTimeout(() => { el.style.display = 'none'; if (cb) cb(); }, durationMs);
 }
 
 function runOpeningSequence() {
-  const QUOTE = '“The trouble with Eichmann was precisely that so many were like him, and that the many were neither perverted nor sadistic, that they were, and still are, terribly and terrifyingly normal.”';
+  const QUOTE = '“The trouble with Eichmann was *precisely* that so many were like him, and that the many were _neither_ _perverted_ _nor_ _sadistic,_ that they were, and still are, **terribly** **and** **terrifyingly** **normal.**”';
   const words = QUOTE.split(' ');
   const wordsEl = document.getElementById('quote-words');
   const attrEl  = document.getElementById('quote-attr');
 
-  // Build word spans — invisible initially
+  document.getElementById('fake-ip').textContent =
+    'Client IP: ' + [1,2,3,4].map(() => Math.floor(Math.random()*254)+1).join('.');
+  attrEl.textContent = '— Hannah Arendt, Eichmann in Jerusalem, 1963';
+
   words.forEach((word, i) => {
     const sp = document.createElement('span');
-    sp.className = 'qw';
-    sp.textContent = (i === 0 ? '' : ' ') + word;
+    let clean = word, extra = '';
+    if (word.includes('**'))     { extra = 'qw-bold';   clean = word.replace(/\*\*/g, ''); }
+    else if (word.includes('*')) { extra = 'qw-italic'; clean = word.replace(/\*/g, '');   }
+    else if (word.includes('_')) { extra = 'qw-under';  clean = word.replace(/_/g, '');    }
+    sp.className = 'qw' + (extra ? ' ' + extra : '');
+    sp.textContent = clean;
     wordsEl.appendChild(sp);
+    wordsEl.appendChild(document.createTextNode(' '));
   });
 
-  // Stagger reveals: 200ms lead-in, 120ms per word
-  words.forEach((_, i) => {
-    setTimeout(() => { wordsEl.children[i].style.opacity = '1'; }, 200 + i * 120);
+  const spanEls = wordsEl.querySelectorAll('.qw');
+  spanEls.forEach((sp, i) => {
+    setTimeout(() => sp.classList.add('visible'), 500 + i * 200);
   });
 
-  // Attribution: 600ms pause after last word, fades over 900ms
-  const attrAt = 200 + (words.length - 1) * 120 + 600;
+  const attrAt = 500 + (spanEls.length - 1) * 200 + 900;
   setTimeout(() => { attrEl.style.opacity = '1'; }, attrAt);
 
-  // Hold 2500ms after attr appears, then fade out quote screen (1000ms)
-  const fadeAt = attrAt + 900 + 2500;
   setTimeout(() => {
     hideMoment('moment-quote', 1000, () => {
-      // Brief pure-black pause, then moment 2
       setTimeout(() => {
-        showMoment('moment-access');
-        // Button fades in 600ms after access text appears
-        setTimeout(() => {
-          document.getElementById('enable-editing-btn').style.opacity = '1';
-        }, 1000);
+        showMoment('moment-access', 600);
+        setTimeout(revealRedacted, 1200);
       }, 300);
     });
-  }, fadeAt);
+  }, attrAt + 1000 + 4000);
+}
+
+function revealRedacted() {
+  const el = document.getElementById('redacted-word');
+  const final = '(hypothetical and fictional)';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>';
+  el.classList.remove('redacted-block');
+  el.style.fontFamily = "'Fira Code', monospace";
+  el.style.color = '#374151';
+  let iter = 0;
+  const iv = setInterval(() => {
+    el.textContent = final.split('').map((ch, idx) => {
+      if (idx < iter) return final[idx];
+      if (ch === ' ') return ' ';
+      return chars[Math.floor(Math.random() * chars.length)];
+    }).join('');
+    if (iter >= final.length) {
+      clearInterval(iv);
+      el.style.fontFamily = '';
+      el.style.color = '';
+      el.style.fontWeight = '600';
+    }
+    iter += 0.5;
+  }, 40);
 }
 
 function handleEnableEditing() {
   document.getElementById('enable-editing-btn').disabled = true;
-  hideMoment('moment-access', 400, () => {
-    showMoment('moment-loading');
-    runLoadingSequence();
+  hideMoment('moment-access', 300, () => {
+    showMoment('moment-terminal', 400);
+    runTerminalSequence();
   });
 }
 
-function runLoadingSequence() {
+async function runTerminalSequence() {
+  const content = document.getElementById('terminal-content');
+  content.classList.add('ps-cursor');
+
   const lines = [
-    { text: 'Connecting to secure network drive...', check: true,  at: 0,    checkAt: 400 },
-    { text: 'Authenticating...',                    check: true,  at: 700,   checkAt: 300 },
-    { text: 'Access granted.',                      check: false, at: 1200              },
-    { text: 'Opening CA_PAU_DEM_2025-003_v4.1_FINAL.xlsx...', check: false, at: 1600 },
+    { text: 'PS C:\Users\Admin> Invoke-RestrictedAccess -File "CA_PAU_DEM_2025-003_v4.1.xlsx"', cmd: true,  delay: 300,  cls: 'ps-white' },
+    { text: 'Establishing secure tunnel to CA_HQ_MAIN...',                                       cmd: false, delay: 500,  cls: ''         },
+    { text: '[+] Tunnel established via proxy 10.42.0.1',                                        cmd: false, delay: 200,  cls: 'ps-green' },
+    { text: 'Bypassing internal domain restrictions...',                                         cmd: false, delay: 600,  cls: ''         },
+    { text: 'WARNING: File subject to CAU Administrative Order 14.',                             cmd: false, delay: 200,  cls: 'ps-red'   },
+    { text: 'PS C:\Users\Admin> Start-ExcelEngine -ForceEnableMacros $true',                   cmd: true,  delay: 900,  cls: 'ps-white' },
+    { text: 'Loading calc_engine.vbs [מאושר]...',                      cmd: false, delay: 450,  cls: ''         },
+    { text: 'Fetching container data matrices (24%)...',                                         cmd: false, delay: 250,  cls: ''         },
+    { text: 'Fetching container data matrices (89%)...',                                         cmd: false, delay: 160,  cls: ''         },
+    { text: 'Fetching container data matrices (100%)...',                                        cmd: false, delay: 110,  cls: ''         },
+    { text: 'Mounting pivot tables and parsing formulas...',                                     cmd: false, delay: 650,  cls: ''         },
+    { text: '[+] System ready. Transferring UI control.',                                        cmd: false, delay: 1000, cls: 'ps-green' },
   ];
-  const container = document.getElementById('loading-lines');
 
-  lines.forEach(ld => {
-    setTimeout(() => {
-      const div = document.createElement('div');
-      div.className = 'loading-line';
-      div.textContent = ld.text;
-      container.appendChild(div);
-      requestAnimationFrame(() => requestAnimationFrame(() => { div.style.opacity = '1'; }));
-      if (ld.check) {
-        setTimeout(() => {
-          div.innerHTML = ld.text + '  <span class="loading-check">✓</span>';
-        }, ld.checkAt);
+  for (const ld of lines) {
+    await new Promise(r => setTimeout(r, ld.delay));
+    const div = document.createElement('div');
+    div.className = 'ps-line' + (ld.cls ? ' ' + ld.cls : '');
+    content.appendChild(div);
+    document.getElementById('moment-terminal').scrollTop = 999999;
+    if (ld.cmd) {
+      for (const ch of ld.text) {
+        div.textContent += ch;
+        await new Promise(r => setTimeout(r, 22));
       }
-    }, ld.at);
-  });
+    } else {
+      div.textContent = ld.text;
+    }
+  }
 
-  // Render spreadsheet behind loading screen so it's ready when we reveal
-  setTimeout(() => switchSheet('01 — Cover'), 1700);
+  await new Promise(r => setTimeout(r, 700));
+  content.classList.remove('ps-cursor');
+  content.innerHTML = '';
+  await new Promise(r => setTimeout(r, 900));
 
-  // Fade out loading screen, revealing the spreadsheet
-  setTimeout(() => hideMoment('moment-loading', 700, null), 2300);
+  const flash = document.getElementById('moment-flash');
+  flash.style.display = 'flex';
+  flash.style.opacity = '0';
+  flash.style.transition = 'opacity 650ms ease';
+  requestAnimationFrame(() => requestAnimationFrame(() => { flash.style.opacity = '1'; }));
+
+  await new Promise(r => setTimeout(r, 500));
+  switchSheet('01 — Cover');
+  hideMoment('moment-terminal', 50, null);
+
+  await new Promise(r => setTimeout(r, 150));
+  flash.style.transition = 'opacity 900ms ease';
+  flash.style.opacity = '0';
+  setTimeout(() => { flash.style.display = 'none'; }, 900);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   renderCommentsPanel();
   renderPAUGlyphs();
 
-  // Unlock Notes tab when Thread 7 final comment scrolls into view
   const finalComment = document.getElementById('thread7-final-comment');
   if (finalComment) {
     const unlockObserver = new IntersectionObserver((entries) => {

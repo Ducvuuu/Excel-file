@@ -6,6 +6,7 @@
 <title>CA_PAU_DEM_2025-003_v4.1_FINAL.xlsx</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <link rel="stylesheet" href="styles/main.css">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -15,19 +16,53 @@
   <div id="quote-attr"></div>
 </div>
 
-<!-- MOMENT 2: ACCESS PROMPT -->
+<!-- MOMENT 2: WIN11 MODAL -->
 <div id="moment-access" class="moment">
-  <div class="access-text">
-    <div class="access-line">This file originated from a restricted network location.</div>
-    <div class="access-line">Some content may be hidden.</div>
+  <div class="win11-modal win11-enter">
+    <div class="win11-header">
+      <div class="win11-title">
+        <svg class="win11-xl-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-1.8 13.9L10 13.2l-2.2 2.7H6.2l3.1-3.7-3-3.6h1.7l2 2.6 2.1-2.6h1.6l-3 3.6 3.1 3.7h-1.5zM13 9V3.5L18.5 9H13z"/>
+        </svg>
+        <span>Security Notice — Microsoft Excel</span>
+      </div>
+      <button class="win11-close" tabindex="-1">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+      </button>
+    </div>
+    <div class="win11-body">
+      <svg class="win11-warn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+      </svg>
+      <div class="win11-text">
+        <div class="win11-heading">PROTECTED VIEW: Restricted Network Access</div>
+        <p class="win11-para">This file originated from an <span id="redacted-word" class="redacted-block">████████████████████████████</span> internal government network <span class="win11-node">(NODE: IL-TLV-GOV-04)</span>.<br><br><strong>Warning:</strong> Modifying this document's formulas or inputs constitutes unauthorized reproduction of state administrative data.</p>
+        <div class="win11-details">
+          <div>File: <span class="win11-detail-val">CA_PAU_DEM_2025-003_v4.1.xlsx</span></div>
+          <div id="fake-ip">Client IP: 10.42.0.1</div>
+          <div>Macros Detected: Yes <span class="win11-detail-val">(calc_engine.vbs)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="win11-footer">
+      <button class="win11-btn-secondary" tabindex="-1">Keep Protected</button>
+      <button id="enable-editing-btn" class="win11-btn-primary" onclick="handleEnableEditing()">Enable Editing</button>
+    </div>
   </div>
-  <button id="enable-editing-btn" onclick="handleEnableEditing()">⚠&nbsp; Enable Editing</button>
 </div>
 
-<!-- MOMENT 3: LOADING STATE -->
-<div id="moment-loading" class="moment">
-  <div id="loading-lines"></div>
+<!-- MOMENT 3: POWERSHELL TERMINAL -->
+<div id="moment-terminal" class="moment">
+  <div class="ps-wrap">
+    <div class="ps-header">Windows PowerShell<br>Copyright (C) Microsoft Corporation. All rights reserved.</div>
+    <div id="terminal-content" class="ps-content"></div>
+  </div>
 </div>
+
+<!-- MOMENT 4: WHITE FLASH -->
+<div id="moment-flash" class="moment" style="background:#ffffff;"></div>
 
 <!-- EXCEL TITLE BAR -->
 <div class="titlebar">
