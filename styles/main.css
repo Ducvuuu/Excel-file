@@ -73,9 +73,11 @@ body {
   font-size: 17px;
   line-height: 1.85;
   color: #eeeeee;
-  max-width: 560px;
+  width: 90%;
+  max-width: 480px;
   text-align: center;
   letter-spacing: 0.01em;
+  word-spacing: 0.05em;
 }
 .qw {
   opacity: 0;
