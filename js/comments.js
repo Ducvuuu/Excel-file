@@ -111,7 +111,7 @@ function renderCommentsPanel(sheetName) {
         entries.forEach(e => {
           if (e.isIntersecting && !state.isNotesUnlocked) fireNotesUnlockSequence();
         });
-      }, { root: panel, threshold: 0.8 });
+      }, { root: panel, threshold: 0.5 });
       obs.observe(finalComment);
     }
   }
@@ -255,6 +255,7 @@ function fireNotesStage1() {
 
 // ── STAGE 2: End of comment thread ──
 function fireNotesUnlockSequence() {
+  if (state.isNotesUnlocked) return;
   state.isNotesUnlocked = true;
   initAudio();
   playDecryptPing();
