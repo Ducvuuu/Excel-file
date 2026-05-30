@@ -490,9 +490,23 @@ function dismissModal() {
   }, 400);
 }
 
+function advanceFromQuote() {
+  const btn = document.getElementById('quote-advance-btn');
+  const quote = document.getElementById('quote-screen');
+  btn.disabled = true;
+  quote.classList.remove('active');
+  setTimeout(() => {
+    quote.style.display = 'none';
+    const modal = document.getElementById('modal-overlay');
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 50);
+    switchSheet('01 — Cover');
+  }, 1000);
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   renderCommentsPanel();
-  renderPAUGlyphs(); // process static HTML status bar
+  renderPAUGlyphs();
 
   // Unlock the Notes tab when the final Thread 7 SR reply scrolls into view
   const finalComment = document.getElementById('thread7-final-comment');
@@ -504,29 +518,4 @@ window.addEventListener('DOMContentLoaded', () => {
     }, { root: document.getElementById('panel-content-area'), threshold: 0.8 });
     unlockObserver.observe(finalComment);
   }
-
-  const quote = document.getElementById('quote-screen');
-  setTimeout(() => {
-    quote.classList.add('active'); 
-    
-    setTimeout(() => {
-      quote.classList.remove('active'); 
-      
-      setTimeout(() => {
-        quote.style.display = 'none';
-        
-        const modal = document.getElementById('modal-overlay');
-        modal.style.display = 'flex';
-        setTimeout(() => {
-          modal.classList.add('active');
-        }, 50);
-
-        switchSheet('01 — Cover');
-
-      }, 1000);
-
-    }, 4500);
-
-  }, 100);
 });
-</script>

@@ -81,6 +81,27 @@ body {
   font-style: italic;
   color: #a0a0a0;
 }
+#quote-advance-btn {
+  margin-top: 48px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.45);
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-style: italic;
+  padding: 8px 28px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+#quote-advance-btn:hover {
+  color: rgba(255,255,255,0.85);
+  border-color: rgba(255,255,255,0.55);
+}
+#quote-advance-btn:disabled {
+  pointer-events: none;
+  opacity: 0.3;
+}
 
 #modal-overlay {
   position: fixed;
