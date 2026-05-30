@@ -226,14 +226,14 @@ function cellCommentLookup(id) {
 // ── UNLOCKING TRIGGER OBSERVER ──
 function checkThreadClimax() {
   if (state.isNotesUnlocked) return;
-  const card7 = document.getElementById('card_thread7');
-  if (!card7) return;
+  const finalComment = document.getElementById('thread7-final-comment');
+  if (!finalComment) return;
 
-  const rect = card7.getBoundingClientRect();
+  const rect = finalComment.getBoundingClientRect();
   const panel = document.getElementById('panel-content-area');
   const panelRect = panel.getBoundingClientRect();
 
-  if (rect.bottom <= panelRect.bottom && rect.top >= panelRect.top) {
+  if (rect.top >= panelRect.top && rect.bottom <= panelRect.bottom) {
     fireNotesUnlockSequence();
   }
 }
