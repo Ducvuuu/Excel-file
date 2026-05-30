@@ -23,7 +23,6 @@ const state = {
     '07 — Notes': { top: 0, left: 0 }
   },
   isNotesUnlocked: false,
-  outputsStage1Fired: false,
   headerCollapsed: true,
   commentsPanelOpen: true,
   audioContext: null,

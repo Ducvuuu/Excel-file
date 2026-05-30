@@ -103,18 +103,6 @@ function renderCommentsPanel(sheetName) {
     panel.appendChild(card);
   });
 
-  // Re-attach IntersectionObserver unlock trigger when Outputs sheet is rendered
-  if (sheetName === '05 — Outputs' && !state.isNotesUnlocked) {
-    const finalComment = document.getElementById('thread7-final-comment');
-    if (finalComment) {
-      const obs = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting && !state.isNotesUnlocked) fireNotesUnlockSequence();
-        });
-      }, { root: panel, threshold: 0.5 });
-      obs.observe(finalComment);
-    }
-  }
 }
 
 // ── NARRATOR NOTE TOOLTIP ──
@@ -223,37 +211,29 @@ function cellCommentLookup(id) {
   return null;
 }
 
-// ── UNLOCKING TRIGGER OBSERVER ──
-function checkThreadClimax() {
+// ── REVEAL: First visit to Methodology ──
+function fireNotesReveal() {
   if (state.isNotesUnlocked) return;
-  const finalComment = document.getElementById('thread7-final-comment');
-  if (!finalComment) return;
-
-  const rect = finalComment.getBoundingClientRect();
-  const panel = document.getElementById('panel-content-area');
-  const panelRect = panel.getBoundingClientRect();
-
-  if (rect.top >= panelRect.top && rect.bottom <= panelRect.bottom) {
-    fireNotesUnlockSequence();
-  }
-}
-
-// ── STAGE 1: First visit to Outputs ──
-function fireNotesStage1() {
-  initAudio();
-  playGlitchSound();
 
   const tabNotes = document.getElementById('tab-notes');
+  if (!tabNotes) return;
+
+  tabNotes.style.display = '';
   tabNotes.innerHTML = `<span id="lock-icon">🔒</span><span id="secret-text">████████</span>`;
   tabNotes.classList.add('stage-locked');
+
+  initAudio();
+  playGlitchSound();
 
   const sb = document.querySelector('.statusbar');
   if (sb) sb.classList.add('warn-flash');
   const sl = document.getElementById('sl');
   if (sl) sl.textContent = 'SYS_WARN: ENCRYPTED OBJECT DETECTED';
+
+  setTimeout(() => fireNotesUnlockSequence(), 1200);
 }
 
-// ── STAGE 2: End of comment thread ──
+// ── UNLOCK SEQUENCE ──
 function fireNotesUnlockSequence() {
   if (state.isNotesUnlocked) return;
   state.isNotesUnlocked = true;
