@@ -238,36 +238,81 @@ function checkThreadClimax() {
   }
 }
 
+// ── STAGE 1: First visit to Outputs ──
+function fireNotesStage1() {
+  initAudio();
+  playGlitchSound();
+
+  const tabNotes = document.getElementById('tab-notes');
+  tabNotes.innerHTML = `<span id="lock-icon">🔒</span><span id="secret-text">████████</span>`;
+  tabNotes.classList.add('stage-locked');
+
+  const sb = document.querySelector('.statusbar');
+  if (sb) sb.classList.add('warn-flash');
+  const sl = document.getElementById('sl');
+  if (sl) sl.textContent = 'SYS_WARN: ENCRYPTED OBJECT DETECTED';
+}
+
+// ── STAGE 2: End of comment thread ──
 function fireNotesUnlockSequence() {
   state.isNotesUnlocked = true;
   initAudio();
-  
+  playDecryptPing();
+
   const tabNotes = document.getElementById('tab-notes');
-  setTimeout(() => {
-    tabNotes.classList.add('shake-anim');
-    
-    setTimeout(() => {
-      tabNotes.classList.remove('shake-anim');
-      const badge = document.getElementById('lock-badge');
-      badge.textContent = '🔓';
-      badge.className = 'crack-fall-anim';
-      playMechanicalClick();
+  const lockIcon = document.getElementById('lock-icon');
+  const secretText = document.getElementById('secret-text');
 
+  // Detach lock icon as falling clone, hide original immediately
+  if (lockIcon) {
+    const rect = lockIcon.getBoundingClientRect();
+    const clone = document.createElement('span');
+    clone.textContent = '🔒';
+    clone.className = 'lock-fall-clone';
+    clone.style.left = rect.left + 'px';
+    clone.style.top = rect.top + 'px';
+    clone.style.fontSize = getComputedStyle(lockIcon).fontSize;
+    document.body.appendChild(clone);
+    lockIcon.style.display = 'none';
+    setTimeout(() => clone.remove(), 900);
+  }
+
+  // Text scramble: ████████ → 07 — Notes
+  const finalText = '07 — Notes';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>';
+  let iter = 0;
+  const iv = setInterval(() => {
+    if (secretText) {
+      secretText.textContent = finalText.split('').map((ch, i) => {
+        if (i < iter) return finalText[i];
+        return chars[Math.floor(Math.random() * chars.length)];
+      }).join('');
+    }
+    iter += 0.4;
+    if (iter >= finalText.length) {
+      clearInterval(iv);
+      if (secretText) secretText.textContent = finalText;
+
+      // Slam the tab into place
+      tabNotes.classList.remove('stage-locked');
+      tabNotes.classList.add('stage-unlocked');
+
+      // Status bar
+      const sb = document.querySelector('.statusbar');
+      if (sb) sb.classList.remove('warn-flash');
+      const sl = document.getElementById('sl');
+      if (sl) sl.textContent = 'OVERRIDE ACCEPTED';
+
+      // After a beat, settle into the final unlocked resting state
       setTimeout(() => {
-        tabNotes.classList.add('unlocked');
-        tabNotes.innerHTML = `<span style="display:none">🔓</span><i>*TOP SECRET — Open only at the end*</i>`;
-        tabNotes.classList.add('tab-unlocked-glow');
-
-        setTimeout(() => {
-          tabNotes.classList.remove('tab-unlocked-glow');
-          tabNotes.innerHTML = `<i>🔓 TOP SECRET — Open only at the end</i>`;
-        }, 1000);
-
-      }, 600);
-
-    }, 400);
-
-  }, 500);
+        tabNotes.classList.remove('stage-unlocked');
+        tabNotes.classList.add('unlocked', 'tab-unlocked-glow');
+        tabNotes.innerHTML = `<i>🔓 TOP SECRET — Open only at the end</i>`;
+        if (sl) sl.textContent = 'Ready';
+        setTimeout(() => tabNotes.classList.remove('tab-unlocked-glow'), 900);
+      }, 1400);
+    }
+  }, 30);
 }
 
 // ── WEB AUDIO SYNTHESIZER ──
@@ -278,6 +323,42 @@ function initAudio() {
   } catch (e) {
     console.warn('Web Audio API not supported.');
   }
+}
+
+function playGlitchSound() {
+  if (!state.audioContext) return;
+  if (document.hidden) return;
+  const ctx = state.audioContext;
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.type = 'square';
+  osc.frequency.setValueAtTime(50, now);
+  osc.frequency.exponentialRampToValueAtTime(10, now + 0.3);
+  gain.gain.setValueAtTime(0.25, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+  osc.start(now);
+  osc.stop(now + 0.3);
+}
+
+function playDecryptPing() {
+  if (!state.audioContext) return;
+  if (document.hidden) return;
+  const ctx = state.audioContext;
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(1500, now);
+  osc.frequency.exponentialRampToValueAtTime(400, now + 0.5);
+  gain.gain.setValueAtTime(0.35, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+  osc.start(now);
+  osc.stop(now + 0.55);
 }
 
 function playMechanicalClick() {

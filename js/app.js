@@ -62,6 +62,12 @@ function switchSheet(targetSheet) {
   // 5. Render target sheet
   renderers[targetSheet]();
 
+  // Stage 1: first visit to Outputs reveals the locked Notes tab
+  if (targetSheet === '05 — Outputs' && !state.outputsStage1Fired && !state.isNotesUnlocked) {
+    state.outputsStage1Fired = true;
+    setTimeout(() => fireNotesStage1(), 900);
+  }
+
   // 5b. Re-render per-sheet comments panel
   renderCommentsPanel(targetSheet);
 

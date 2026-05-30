@@ -717,13 +717,49 @@ tr.row-sticky-9 th.rh { position: sticky; top: 37px; left: 0; z-index: 20 !impor
 
 /* Notes tab locking states */
 #tab-notes {
-  margin-left: 8px; /* Visual Gap */
+  margin-left: 8px;
   color: #a0a0a0;
   background: #c8c8c8;
   font-style: italic;
   position: relative;
   top: 2px;
   pointer-events: none;
+}
+/* Stage 1: encrypted/locked appearance */
+#tab-notes.stage-locked {
+  background: #404040 !important;
+  color: #ff4444 !important;
+  border: 1px solid #111 !important;
+  font-family: 'Courier New', monospace !important;
+  font-style: normal !important;
+  font-weight: bold !important;
+  top: 0;
+  pointer-events: none !important;
+  animation: notesGlitch 0.45s ease-out;
+}
+@keyframes notesGlitch {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-4px); background: #c00000; color: #fff; }
+  40%  { transform: translateX(4px); }
+  60%  { transform: translateX(-2px); }
+  80%  { transform: translateX(2px); }
+  100% { transform: translateX(0); }
+}
+/* Stage 2: slam-in after decrypt */
+#tab-notes.stage-unlocked {
+  background: #fff !important;
+  color: #1a1a1a !important;
+  font-family: var(--font-xl) !important;
+  font-style: normal !important;
+  font-weight: bold !important;
+  border-color: #c0c0c0 !important;
+  top: 0;
+  pointer-events: auto !important;
+  animation: notesSlam 0.35s ease-out forwards;
+}
+@keyframes notesSlam {
+  0%   { box-shadow: 0 0 18px rgba(0,0,0,0.45); border-color: #c00000 !important; background: #fff0f0 !important; }
+  100% { box-shadow: none; border-color: #c0c0c0; background: #fff; }
 }
 #tab-notes.unlocked {
   color: #ffffff;
@@ -741,6 +777,27 @@ tr.row-sticky-9 th.rh { position: sticky; top: 37px; left: 0; z-index: 20 !impor
   display: inline-block;
   margin-right: 4px;
   transition: transform 0.3s ease;
+}
+/* Status bar Stage 1 warning */
+.statusbar.warn-flash {
+  background: #c00000 !important;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+/* Falling lock (Stage 2) */
+.lock-fall-clone {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  transform-origin: center;
+  animation: lockFallAway 0.8s ease-in forwards;
+}
+@keyframes lockFallAway {
+  0%   { transform: scale(1.2) rotate(0deg); opacity: 1; }
+  20%  { transform: scale(1.2) rotate(15deg); opacity: 1; }
+  40%  { transform: scale(1.2) rotate(-10deg); opacity: 1; }
+  100% { transform: translateY(70px) rotate(45deg); opacity: 0; }
 }
 
 .statusbar {
