@@ -2,101 +2,138 @@
 
 // ══ COMMENTS PANEL ════════════════════════════════════════════════════════════════
 
-function renderCommentsPanel() {
+function renderCommentsPanel(sheetName) {
   const panel = document.getElementById('panel-content-area');
   panel.innerHTML = '';
+  panel.scrollTop = 0;
 
-  const sheets = ['01 — Cover', '02 — Inputs', '03 — Assumptions', '04 — Calculations', '05 — Outputs', 'OLD_v3.2_DO_NOT_USE', '06 — Methodology'];
-  sheets.forEach(sh => {
-    const shComments = commentsDb[sh];
-    if (!shComments.length) return;
+  // Update panel header to show current sheet
+  const hdrSpan = document.querySelector('.panel-hdr span:first-child');
+  if (hdrSpan) hdrSpan.textContent = sheetName ? `Comments — ${sheetName}` : 'Comments';
 
-    const div = document.createElement('div');
-    div.className = 'panel-sec-divider';
-    div.textContent = `── ${sh} ──────────────────────────`;
-    panel.appendChild(div);
+  const shComments = commentsDb[sheetName];
+  if (!shComments || !shComments.length) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'color:#888;font-style:italic;font-size:11px;padding:16px;';
+    empty.textContent = 'No comments on this sheet.';
+    panel.appendChild(empty);
+    return;
+  }
 
-    shComments.forEach(c => {
-      const card = document.createElement('div');
-      card.className = 'comment-card' + (c.author === 'DH' ? ' cm-card--dh' : '') + (c.author === 'YB' ? ' cm-card--yb' : '');
-      card.id = 'card_' + c.id;
-      if (c.id === 'thread7') card.setAttribute('data-thread', '7');
-      card.onclick = () => focusCommentCell(sh, c.cell, c.id);
+  // Pinned first, then insertion order
+  const sorted = [...shComments].sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0));
 
-      const hdr = document.createElement('div');
-      hdr.className = 'comment-card-hdr';
+  sorted.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'comment-card' + (c.author === 'DH' ? ' cm-card--dh' : '') + (c.author === 'YB' ? ' cm-card--yb' : '');
+    card.id = 'card_' + c.id;
+    if (c.id === 'thread7') card.setAttribute('data-thread', '7');
+    card.onclick = () => focusCommentCell(sheetName, c.cell, c.id);
 
-      const av = document.createElement('div');
-      av.className = `avatar ${c.author.toLowerCase()}`;
-      av.textContent = c.author;
-      hdr.appendChild(av);
+    const hdr = document.createElement('div');
+    hdr.className = 'comment-card-hdr';
 
-      const name = document.createElement('span');
-      name.className = 'comment-author-name';
-      name.textContent = c.author;
-      hdr.appendChild(name);
+    const av = document.createElement('div');
+    av.className = `avatar ${c.author.toLowerCase()}`;
+    av.textContent = c.author;
+    hdr.appendChild(av);
 
-      const time = document.createElement('span');
-      time.className = 'comment-time';
-      time.textContent = c.timestamp;
-      hdr.appendChild(time);
+    const name = document.createElement('span');
+    name.className = 'comment-author-name';
+    name.textContent = c.author;
+    hdr.appendChild(name);
 
-      card.appendChild(hdr);
+    const time = document.createElement('span');
+    time.className = 'comment-time';
+    time.textContent = c.timestamp;
+    hdr.appendChild(time);
 
-      if (c.cell) {
-        const loc = document.createElement('div');
-        loc.className = 'comment-loc';
-        loc.textContent = `Cell: ${c.cell}`;
-        card.appendChild(loc);
-      }
+    card.appendChild(hdr);
 
-      const txt = document.createElement('div');
-      txt.className = 'comment-text';
-      txt.textContent = c.text;
-      card.appendChild(txt);
+    if (c.cell) {
+      const loc = document.createElement('div');
+      loc.className = 'comment-loc';
+      loc.textContent = `Cell: ${c.cell}`;
+      card.appendChild(loc);
+    }
 
-      if (c.replies && c.replies.length) {
-        c.replies.forEach(r => {
-          const rep = document.createElement('div');
-          rep.className = 'reply-block' + (r.author === 'DH' ? ' cm-card--dh' : '') + (r.author === 'YB' ? ' cm-card--yb' : '');
+    const txt = document.createElement('div');
+    txt.className = 'comment-text';
+    txt.textContent = c.text;
+    card.appendChild(txt);
 
-          // Mark the final Thread 7 SR reply for the IntersectionObserver unlock trigger
-          if (c.id === 'thread7' && r.author === 'SR' && r.timestamp === '10/01 16:11') {
-            rep.id = 'thread7-final-comment';
-          }
+    if (c.replies && c.replies.length) {
+      c.replies.forEach(r => {
+        const rep = document.createElement('div');
+        rep.className = 'reply-block' + (r.author === 'DH' ? ' cm-card--dh' : '') + (r.author === 'YB' ? ' cm-card--yb' : '');
 
-          const rhdr = document.createElement('div');
-          rhdr.className = 'comment-card-hdr';
+        if (c.id === 'thread7' && r.author === 'SR' && r.timestamp === '10/01 16:11') {
+          rep.id = 'thread7-final-comment';
+        }
 
-          const rav = document.createElement('div');
-          rav.className = `avatar ${r.author.toLowerCase()}`;
-          rav.textContent = r.author;
-          rhdr.appendChild(rav);
+        const rhdr = document.createElement('div');
+        rhdr.className = 'comment-card-hdr';
 
-          const rname = document.createElement('span');
-          rname.className = 'comment-author-name';
-          rname.textContent = r.author;
-          rhdr.appendChild(rname);
+        const rav = document.createElement('div');
+        rav.className = `avatar ${r.author.toLowerCase()}`;
+        rav.textContent = r.author;
+        rhdr.appendChild(rav);
 
-          const rtime = document.createElement('span');
-          rtime.className = 'comment-time';
-          rtime.textContent = r.timestamp;
-          rhdr.appendChild(rtime);
+        const rname = document.createElement('span');
+        rname.className = 'comment-author-name';
+        rname.textContent = r.author;
+        rhdr.appendChild(rname);
 
-          rep.appendChild(rhdr);
+        const rtime = document.createElement('span');
+        rtime.className = 'comment-time';
+        rtime.textContent = r.timestamp;
+        rhdr.appendChild(rtime);
 
-          const rtxt = document.createElement('div');
-          rtxt.className = 'comment-text';
-          rtxt.textContent = r.text;
-          rep.appendChild(rtxt);
+        rep.appendChild(rhdr);
 
-          card.appendChild(rep);
-        });
-      }
+        const rtxt = document.createElement('div');
+        rtxt.className = 'comment-text';
+        rtxt.textContent = r.text;
+        rep.appendChild(rtxt);
 
-      panel.appendChild(card);
-    });
+        card.appendChild(rep);
+      });
+    }
+
+    panel.appendChild(card);
   });
+
+  // Re-attach IntersectionObserver unlock trigger when Outputs sheet is rendered
+  if (sheetName === '05 — Outputs' && !state.isNotesUnlocked) {
+    const finalComment = document.getElementById('thread7-final-comment');
+    if (finalComment) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting && !state.isNotesUnlocked) fireNotesUnlockSequence();
+        });
+      }, { root: panel, threshold: 0.8 });
+      obs.observe(finalComment);
+    }
+  }
+}
+
+// ── NARRATOR NOTE TOOLTIP ──
+function showNote(event, noteId) {
+  const text = (typeof narratorNotes !== 'undefined') ? narratorNotes[noteId] : null;
+  if (!text) return;
+  const tip = document.getElementById('narrator-tip');
+  if (!tip) return;
+  document.getElementById('narrator-tip-body').textContent = text;
+  const rx = Math.min(event.clientX + 14, window.innerWidth - 340);
+  const ry = Math.min(event.clientY + 14, window.innerHeight - 200);
+  tip.style.left = rx + 'px';
+  tip.style.top = ry + 'px';
+  tip.classList.add('vis');
+}
+
+function hideNote() {
+  const tip = document.getElementById('narrator-tip');
+  if (tip) tip.classList.remove('vis');
 }
 
 function focusCommentCell(sheet, cellRef, id) {

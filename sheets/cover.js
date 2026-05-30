@@ -64,10 +64,10 @@ function renderCover() {
     cellMarkup('', 'hdr', '', '', 5),
   ]));
   rows.push(rowMarkup(17, [
-    cellMarkup('1,575,400', 'ctr b', '=CohComp_ScB!Total_ScB_2034', '', 1, 'font-size:15px;color:#c00000;padding:5px 0;'),
-    cellMarkup('28.9%', 'ctr b', '=CohComp_ScB!Under14_ScB_2034/Total_ScB_2034', '', 1, 'font-size:15px;color:#c00000;padding:5px 0;'),
-    cellMarkup('0.71', 'ctr b', '=CohComp_ScB!NRR_2029', '', 1, 'font-size:15px;color:#c00000;padding:5px 0;'),
-    cellMarkup('31', 'ctr b', '=Methodology!CDVI_2034', '', 1, 'font-size:15px;color:#c00000;padding:5px 0;'),
+    cellMarkup('1,575,400', 'ctr b key-cell', '=CohComp_ScB!Total_ScB_2034', '', 1, 'font-size:15px;color:#c00000;padding:5px 0;', 'cover_B17_pop1575'),
+    cellMarkup('28.9%', 'ctr b key-cell', '=CohComp_ScB!Under14_ScB_2034/Total_ScB_2034', '', 1, 'font-size:15px;color:#c00000;padding:5px 0;', 'cover_C17_under14'),
+    cellMarkup('0.71', 'ctr b key-cell', '=CohComp_ScB!NRR_2029', '', 1, 'font-size:15px;color:#c00000;padding:5px 0;', 'cover_D17_nrr071'),
+    cellMarkup('31', 'ctr b key-cell', '=Methodology!CDVI_2034', '', 1, 'font-size:15px;color:#c00000;padding:5px 0;', 'cover_E17_cdvi31'),
     cellMarkup('', '', '', '', 5),
   ]));
   rows.push(rowMarkup(18, [
@@ -173,7 +173,7 @@ function renderCover() {
 
   rows.push(emptyRowMarkup(37, ncols));
   rows.push(rowMarkup(38, [
-    cellMarkup('#REF!', 'err warn-cell', '=SCA_SCS_fertility_baseline_2022_revised!PopReg_extract_B4', ''),
+    cellMarkup('#REF!', 'err warn-cell key-cell', '=SCA_SCS_fertility_baseline_2022_revised!PopReg_extract_B4', ''),
     cellMarkup('← ref. broken since v3.8 restructure — named range deleted. check w/ MK', 'lt i warn-cell', '', '', ncols - 1),
   ]));
 

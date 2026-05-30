@@ -62,6 +62,9 @@ function switchSheet(targetSheet) {
   // 5. Render target sheet
   renderers[targetSheet]();
 
+  // 5b. Re-render per-sheet comments panel
+  renderCommentsPanel(targetSheet);
+
   // 5a. Reapply header expanded/collapsed state (new renders always start hidden)
   const toggleBtn = document.getElementById('toggle-btn');
   if (toggleBtn) toggleBtn.innerHTML = state.headerCollapsed ? '▶' : '▼';
@@ -97,6 +100,17 @@ function switchSheet(targetSheet) {
         }
       });
     }
+  }
+
+  // 6b. Key cell pulse — fires once per sheet, on first visit only
+  if (!state.highlightedSheets[targetSheet]) {
+    state.highlightedSheets[targetSheet] = true;
+    setTimeout(() => {
+      document.querySelectorAll('.key-cell').forEach(cell => {
+        cell.classList.add('key-pulse');
+        setTimeout(() => cell.classList.remove('key-pulse'), 1200);
+      });
+    }, 400);
   }
 
   // 7. Update status bar prompts

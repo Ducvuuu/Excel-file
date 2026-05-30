@@ -48,22 +48,27 @@ function renderOld() {
 
   oldData.forEach(([ind, base, p27, p30, p35, ref], i) => {
     const bg = i % 2 === 1 ? ' alt-red' : '';
+    const isTotalRow = i === 0;
     rows.push(rowMarkup(8+i, [
       cellMarkup(ind, 'strike b'+bg, '', ''),
       cellMarkup(base, 'strike num lt'+bg, '', ''),
       cellMarkup(p27, 'strike num lt'+bg, '', ''),
-      cellMarkup(p30, 'strike num b red'+bg, '', ''),
+      cellMarkup(p30, 'strike num b red'+bg+(isTotalRow?' key-cell':''), '', '', undefined, undefined, isTotalRow?'old_D8_1946':undefined),
       cellMarkup(p35, 'strike num lt'+bg, '', ''),
       cellMarkup(ref, 'lt i'+bg, '', ''),
     ]));
   });
 
-  rows.push(emptyRowMarkup(12, ncols));
-  rows.push(rowMarkup(13, [
+  rows.push(rowMarkup(12, [
+    cellMarkup('v3.2 → v4.1 revision (2030 Sc.B):  1,946,800  →  1,727,800  |  Δ = −219,000', '', '', '', ncols, 'font-family:Courier New,monospace;font-size:10px;color:#909090;font-style:italic;'),
+  ]));
+
+  rows.push(emptyRowMarkup(14, ncols));
+  rows.push(rowMarkup(14, [
     cellMarkup('CA/PAU/DEM/2025-003  |  v3.2 (OLD)  |  Superseded v4.1 Review  |  <span class="pau-script">&#xE001;&#xE002;&#xE003;&#xE004;&#xE005;</span><span class="pau-sep">&#xE008;</span> — RESTRICTED', 'footer-stamp', '', '', ncols),
   ]));
 
-  for (let i = 14; i <= 24; i++) rows.push(emptyRowMarkup(i, ncols));
+  for (let i = 15; i <= 25; i++) rows.push(emptyRowMarkup(i, ncols));
 
   document.getElementById('maintable').innerHTML = cg + thead + `<tbody>${rows.join('')}</tbody>`;
 }

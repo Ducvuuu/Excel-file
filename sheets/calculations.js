@@ -311,10 +311,10 @@ function renderCalculations() {
     cellMarkup('Births — Period Total  |  SUMPRODUCT(ASFR_ScB × AvgPF_1549)  |  Feeds → P(0–4) cohort', 'b', '', ''),
     cellMarkup('', 'lt', '', ''), cellMarkup('—', 'ctr lt', '', ''), cellMarkup('—', 'ctr lt', '', ''), cellMarkup('—', 'ctr lt', '', ''),
     cellMarkup('—', 'ctr lt', '', ''), cellMarkup('—', 'ctr lt', '', ''),
-    cellMarkup('143,400', 'num b births-bg', '=SUMPRODUCT(ASFR_ScB_1549,AvgPF_1549_24_29)*(1/SRB)*SurvRatio_ScB_0_4', 'H58'),
+    cellMarkup('143,400', 'num b births-bg key-cell', '=SUMPRODUCT(ASFR_ScB_1549,AvgPF_1549_24_29)*(1/SRB)*SurvRatio_ScB_0_4', 'H58', undefined, undefined, 'calc_H58_births1'),
     cellMarkup('—', 'ctr lt', '', ''), cellMarkup('—', 'ctr lt', '', ''), cellMarkup('—', 'ctr lt print-boundary-col', '', ''),
     cellMarkup('—', 'ctr lt block-sep', '', ''), cellMarkup('—', 'ctr lt', '', ''),
-    cellMarkup('98,200', 'num b births-bg', '', 'N58'),
+    cellMarkup('98,200', 'num b births-bg key-cell', '', 'N58', undefined, undefined, 'calc_N58_births2'),
     cellMarkup('—', 'ctr lt', '', ''), cellMarkup('—', 'ctr lt', '', ''), cellMarkup('—', 'ctr lt', '', '')
   ];
   const annualBirths = [29332, 27900, 26400, 24800, 23200, 21800, 20400, 19400, 18700, 18200];

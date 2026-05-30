@@ -25,7 +25,8 @@ const state = {
   isNotesUnlocked: false,
   headerCollapsed: true,
   commentsPanelOpen: true,
-  audioContext: null
+  audioContext: null,
+  highlightedSheets: {}
 };
 
 // ══ GRID MARKUP HELPERS ═══════════════════════════════════════════════════════════
@@ -33,21 +34,26 @@ const state = {
 
 // ── EXCEL CHROME GRID BUILDERS ──
 
-function cellMarkup(content, cls, formula, commentId, span, style) {
+function cellMarkup(content, cls, formula, commentId, span, style, narratorNoteId) {
   const sheet = state.activeSheet;
   const actualCommentId = commentId || cellToCommentId[sheet + '_' + (formula || '')];
   const cm = actualCommentId ? (commentsDb[sheet].find(c=>c.id === actualCommentId) || { author: 'SR' }) : null;
   const tri = cm ? (cm.author === 'SR' ? ' hcg' : ' hc') : '';
-  const allCls = ['c', cls||'', tri].filter(Boolean).join(' ');
+  const hnMark = narratorNoteId ? ' hn' : '';
+  const allCls = ['c', cls||'', tri, hnMark].filter(Boolean).join(' ');
   const fesc = (formula||'').replace(/"/g,'&quot;');
-  
-  const cmAttr = actualCommentId ? `onmouseenter="showCM(event,'${actualCommentId}')" onmouseleave="hideCM()"` : '';
+
+  // Narrator note takes hover priority; comment tooltip is still accessible via panel
+  const hoverAttr = narratorNoteId
+    ? `onmouseenter="showNote(event,'${narratorNoteId}')" onmouseleave="hideNote()"`
+    : (actualCommentId ? `onmouseenter="showCM(event,'${actualCommentId}')" onmouseleave="hideCM()"` : '');
   const spanAttr = span && span > 1 ? ` colspan="${span}"` : '';
   const styleAttr = style ? ` style="${style}"` : '';
-  return `<td class="${allCls}" tabindex="0"${spanAttr}${styleAttr}
+  const noteDataAttr = narratorNoteId ? ` data-note="${narratorNoteId}"` : '';
+  return `<td class="${allCls}" tabindex="0"${spanAttr}${styleAttr}${noteDataAttr}
     data-f="${fesc}"
     onclick="selectCell(this,'${actualCommentId||''}','${(formula||'').replace(/'/g,"\\'")}')"
-    ${cmAttr}>${content}</td>`;
+    ${hoverAttr}>${content}</td>`;
 }
 
 function rowMarkup(n, cells, trCls, style) {

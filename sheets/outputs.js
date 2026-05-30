@@ -89,7 +89,7 @@ function renderOutputs() {
   ]));
 
   rows.push(rowMarkup(17, [
-    cellMarkup('Net Reproduction Rate (NRR)', 'b', '', ''), cellMarkup('index', 'ctr lt', '', ''), cellMarkup('1.61', 'num', '', ''), cellMarkup('0.71', 'num redbg', '=CohComp_ScB!NRR_2029', ''),
+    cellMarkup('Net Reproduction Rate (NRR)', 'b', '', ''), cellMarkup('index', 'ctr lt', '', ''), cellMarkup('1.61', 'num', '', ''), cellMarkup('0.71', 'num redbg key-cell', '=CohComp_ScB!NRR_2029', '', undefined, undefined, 'outputs_D17_nrr071'),
     cellMarkup('0.58', 'num redbg alt', '=CohComp_ScB!NRR_2034', 'E17'), cellMarkup('−1.03', 'num red', '', ''), cellMarkup('−64.0%', 'num b red', '', ''),
     cellMarkup('~0.38', t50, '', '', 2, t50s),
     cellMarkup('CohComp_ScB — derived', 'lt', '', '', 3)
@@ -104,15 +104,15 @@ function renderOutputs() {
 
   rows.push(rowMarkup(19, [
     cellMarkup('Annual Births (projected)', 'b', '', ''), cellMarkup('persons', 'ctr lt', '', ''), cellMarkup('36,300', 'num', '', ''), cellMarkup('23,200', 'num', '', ''),
-    cellMarkup('18,200', 'num alt', '=CohComp_ScB!Births_2034', ''), cellMarkup('−18,100', 'num red', '', ''), cellMarkup('−49.9%', 'num b red', '', ''),
+    cellMarkup('18,200', 'num alt key-cell', '=CohComp_ScB!Births_2034', '', undefined, undefined, 'outputs_E19_births18200'), cellMarkup('−18,100', 'num red', '', ''), cellMarkup('−49.9%', 'num b red', '', ''),
     cellMarkup('~10,000', t50, '', '', 2, t50s),
     cellMarkup('CohComp_ScB — births row', 'lt', '', '', 3)
   ]));
 
   rows.push(rowMarkup(20, [
-    cellMarkup('Compound Viability (CDVI)', 'b', '', ''), cellMarkup('index 0–100', 'ctr lt', '', ''), cellMarkup('100', 'num b', '', ''), cellMarkup('71', 'num b', '=Methodology!CDVI_2029', ''),
-    cellMarkup('31', 'num b alt', '=Methodology!CDVI_2034', 'thread7'), cellMarkup('−69', 'num red', '', ''), cellMarkup('−69.0%', 'num b red', '', ''),
-    cellMarkup('10', 'num b i', '=Methodology!CDVI_2050_terminal', '', 2, t50s + 'font-weight:700;'),
+    cellMarkup('Compound Viability (CDVI)', 'b', '', ''), cellMarkup('index 0–100', 'ctr lt', '', ''), cellMarkup('100', 'num b key-cell', '', ''), cellMarkup('71', 'num b key-cell', '=Methodology!CDVI_2029', ''),
+    cellMarkup('31', 'num b alt key-cell', '=Methodology!CDVI_2034', 'thread7', undefined, undefined, 'outputs_E20_cdvi31'), cellMarkup('−69', 'num red', '', ''), cellMarkup('−69.0%', 'num b red', '', ''),
+    cellMarkup('10', 'num b i key-cell', '=Methodology!CDVI_2050_terminal', '', 2, t50s + 'font-weight:700;'),
     cellMarkup('Non-standard PAU metric. Sign-off pending — methodology caveat C-04.', 'lt', '', '', 3)
   ]));
 

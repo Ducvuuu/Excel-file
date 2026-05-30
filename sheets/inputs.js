@@ -92,13 +92,13 @@ function renderInputs() {
       cellMarkup(fmtN(pm),            'num'+bg,                                   `=PopReg_M_${label}`, ''),
       cellMarkup(fmtN(pf),            'num'+bg,                                   `=PopReg_F_${label}`, ''),
       cellMarkup(fmtN(total),         'num b'+bg,                                 `=C${rn}+D${rn}`, ''),
-      cellMarkup(asdr.toFixed(2),     'num'+bg+(flag?' flag':''),                  `=ASDR_baseline_${label}`, asdId||''),
+      cellMarkup(asdr.toFixed(2),     'num'+bg+(flag?' flag key-cell':''),          `=ASDR_baseline_${label}`, asdId||'', undefined, undefined, flag?'inputs_E9_asdr04':undefined),
       cellMarkup(srStr,               'num-s'+bg,                                  `=1-(ASDR_${label}/1000)^5`, ''),
       cellMarkup(spark(pm, MAX_M, '#2e75b6'), 'spark'+bg,                          '', ''),
       cellMarkup(spark(pf, MAX_F, '#c00000'), 'spark'+bg,                          '', ''),
       cellMarkup(src,                 'lt'+bg,                                     '', ''),
       cellMarkup(rel,                 relCls+bg,                                   '', ''),
-      cellMarkup(noteText,            'lt meta-red'+bg+(flag?' flag':''),           '', 'thread6'),
+      cellMarkup(noteText,            'lt meta-red'+bg+(flag?' flag key-cell':''), '', 'thread6'),
       cellMarkup('', bg, '', '')
     ]));
   });
@@ -249,7 +249,7 @@ function renderInputs() {
 
     rows.push(rowMarkup(rn, [
       cellMarkup(label,             bg.trim(),  '', ''),
-      cellMarkup(nmrM.toFixed(4),   nmrCls,     `=NMR_M_${label.replace('–','')}`, nmrId),
+      cellMarkup(nmrM.toFixed(4),   nmrCls+(nmrId?' key-cell':''),     `=NMR_M_${label.replace('–','')}`, nmrId, undefined, undefined, nmrId?'inputs_B_nmr2024':undefined),
       cellMarkup(nmrF.toFixed(4),   nmrCls,     `=NMR_F_${label.replace('–','')}`, ''),
       cellMarkup(netM.toLocaleString('en-US'), 'num-s'+bg, `=C${rn}*PopReg_M_${label}`, ''),
       cellMarkup(netF.toLocaleString('en-US'), 'num-s'+bg, `=D${rn}*PopReg_F_${label}`, ''),

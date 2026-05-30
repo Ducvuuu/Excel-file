@@ -74,10 +74,11 @@ function renderAssumptions() {
     else if (i >= 3 && i <= 6) bg = ' yelbg';
     else bg = i % 2 === 1 ? ' alt' : '';
     const delta = scB - scA;
+    const isZeroFour = i === 0;
     rows.push(rowMarkup(rn,[
       cellMarkup(lbl, bg.trim(), '', ''),
-      cellMarkup(scA.toFixed(2), 'num sca'+bg, fA, ''),
-      cellMarkup(scB.toFixed(2), 'num scb'+bg, fB, scBId||''),
+      cellMarkup(scA.toFixed(2), 'num sca'+bg+(isZeroFour?' key-cell':''), fA, '', undefined, undefined, isZeroFour?'assump_B10_asdr04a':undefined),
+      cellMarkup(scB.toFixed(2), 'num scb'+bg+(isZeroFour?' key-cell':''), fB, scBId||'', undefined, undefined, isZeroFour?'assump_C10_asdr04b':undefined),
       cellMarkup('+'+delta.toFixed(2), 'delta-pos'+bg, `=C${rn}-B${rn}`, ''),
       cellMarkup(bA, 'lt'+bg, '', ''),
       cellMarkup(bB, 'lt'+bg, '', ''),
@@ -164,7 +165,7 @@ function renderAssumptions() {
   rows.push(rowMarkup(rTFR,[
     cellMarkup('TFR  (Total Fertility Rate)', 'b', '', 'tfr_lbl'),
     cellMarkup(tfr_a.toFixed(2), 'num sca b', '=SUM(ASFR_ScA_1549)*5', ''),
-    cellMarkup(tfr_b.toFixed(2), 'num scb b', '=SUM(ASFR_ScB_1549)*5', ''),
+    cellMarkup(tfr_b.toFixed(2), 'num scb b key-cell', '=SUM(ASFR_ScB_1549)*5', '', undefined, undefined, 'assump_C41_tfr206'),
     cellMarkup((tfr_b-tfr_a).toFixed(2), 'delta-neg b', `=C${rTFR}-B${rTFR}`, ''),
     cellMarkup('CBS DHS 2022 / PCBS 2023 preliminary', 'lt', '', ''),
     cellMarkup('Derived from Scenario B ASFR — nutritional suppression model applied', 'lt', '', ''),
@@ -177,7 +178,7 @@ function renderAssumptions() {
   rows.push(rowMarkup(rNRR,[
     cellMarkup('NRR  (Net Reproduction Rate)', 'b nrr-row', '', 'nrr_lbl'),
     cellMarkup(nrr_a.toFixed(2), 'num sca b nrr-row', '=NRR_ScA', ''),
-    cellMarkup(nrr_b.toFixed(2), 'num scb b nrr-row', '=NRR_ScB_2030', 'thread3'),
+    cellMarkup(nrr_b.toFixed(2), 'num scb b nrr-row key-cell', '=NRR_ScB_2030', 'thread3', undefined, undefined, 'assump_C42_nrr071'),
     cellMarkup((nrr_b-nrr_a).toFixed(2), 'delta-neg b nrr-row', `=C${rNRR}-B${rNRR}`, ''),
     cellMarkup('Derived — life table × ASFR', 'lt nrr-row', '', ''),
     cellMarkup('Scenario B life table × ASFR', 'lt nrr-row', '', ''),

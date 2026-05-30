@@ -630,18 +630,7 @@ async function runTerminalSequence() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  renderCommentsPanel();
+  renderCommentsPanel('01 — Cover');
   renderPAUGlyphs();
-
-  const finalComment = document.getElementById('thread7-final-comment');
-  if (finalComment) {
-    const unlockObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting && !state.isNotesUnlocked) fireNotesUnlockSequence();
-      });
-    }, { root: document.getElementById('panel-content-area'), threshold: 0.8 });
-    unlockObserver.observe(finalComment);
-  }
-
   runOpeningSequence();
 });
