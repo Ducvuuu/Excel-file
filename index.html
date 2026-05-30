@@ -274,9 +274,9 @@
 </div>
 
 <!-- NARRATOR NOTE TOOLTIP -->
-<div id="narrator-tip">
-  <div class="narrator-tip-auth">Narrator</div>
-  <div id="narrator-tip-body" class="narrator-tip-body"></div>
+<div id="narrator-tip" onmouseenter="keepNote()" onmouseleave="hideNote()">
+  <div class="narrator-tip-auth">Narrator <span class="narrator-tip-edit-hint">— click to edit</span></div>
+  <div id="narrator-tip-body" class="narrator-tip-body" contenteditable="true" spellcheck="false" onblur="saveNote()" onkeydown="if(event.key==='Escape')hideNote()"></div>
 </div>
 
 <!-- SCRIPTS: load order matters — data → state → sheets → app → comments → charts -->

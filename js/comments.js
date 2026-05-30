@@ -118,12 +118,22 @@ function renderCommentsPanel(sheetName) {
 }
 
 // ── NARRATOR NOTE TOOLTIP ──
+let _currentNoteId = null;
+let _notePinned = false;
+
 function showNote(event, noteId) {
-  const text = (typeof narratorNotes !== 'undefined') ? narratorNotes[noteId] : null;
-  if (!text) return;
   const tip = document.getElementById('narrator-tip');
   if (!tip) return;
-  document.getElementById('narrator-tip-body').textContent = text;
+  // Don't replace content if the same note is already open and being edited
+  if (_currentNoteId === noteId && _notePinned) return;
+
+  _currentNoteId = noteId;
+  _notePinned = false;
+
+  const body = document.getElementById('narrator-tip-body');
+  const text = (typeof narratorNotes !== 'undefined') ? (narratorNotes[noteId] || '') : '';
+  body.textContent = text;
+
   const rx = Math.min(event.clientX + 14, window.innerWidth - 340);
   const ry = Math.min(event.clientY + 14, window.innerHeight - 200);
   tip.style.left = rx + 'px';
@@ -131,9 +141,24 @@ function showNote(event, noteId) {
   tip.classList.add('vis');
 }
 
+function keepNote() {
+  _notePinned = true;
+}
+
 function hideNote() {
+  if (_notePinned) return;
   const tip = document.getElementById('narrator-tip');
   if (tip) tip.classList.remove('vis');
+  _currentNoteId = null;
+}
+
+function saveNote() {
+  _notePinned = false;
+  if (!_currentNoteId) return;
+  const body = document.getElementById('narrator-tip-body');
+  if (body && typeof narratorNotes !== 'undefined') {
+    narratorNotes[_currentNoteId] = body.textContent;
+  }
 }
 
 function focusCommentCell(sheet, cellRef, id) {
