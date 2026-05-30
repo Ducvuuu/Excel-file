@@ -9,30 +9,24 @@
 </head>
 <body>
 
-<!-- ARENDT QUOTE COVER SCREEN -->
-<div id="quote-screen" class="active">
-  <div class="quote-text">
-    "The trouble with Eichmann was precisely that so many were like him, and that the many were neither perverted nor sadistic, that they were, and still are, terribly and terrifyingly normal."
-  </div>
-  <div class="quote-author">
-    — Hannah Arendt, <i>Eichmann in Jerusalem</i>, 1963
-  </div>
-  <button id="quote-advance-btn" onclick="advanceFromQuote()">continue →</button>
+<!-- MOMENT 1: QUOTE -->
+<div id="moment-quote" class="moment">
+  <div id="quote-words"></div>
+  <div id="quote-attr"></div>
 </div>
 
-<!-- EXCEL NOTIFICATION MODAL OVERLAY -->
-<div id="modal-overlay">
-  <div class="xl-modal">
-    <div class="xl-modal-title">
-      <span>⚠</span> Protected Document
-    </div>
-    <div class="xl-modal-body">
-      This document is intended to be read in sequence.<br><br>
-      Use the comment panel on the right (→) to follow the analyst review thread.<br><br>
-      Sheets are numbered 01–06. The final sheet unlocks automatically as you reach the climax of the thread.
-    </div>
-    <button class="xl-modal-btn" onclick="dismissModal()">Begin</button>
+<!-- MOMENT 2: ACCESS PROMPT -->
+<div id="moment-access" class="moment">
+  <div class="access-text">
+    <div class="access-line">This file originated from a restricted network location.</div>
+    <div class="access-line">Some content may be hidden.</div>
   </div>
+  <button id="enable-editing-btn" onclick="handleEnableEditing()">⚠&nbsp; Enable Editing</button>
+</div>
+
+<!-- MOMENT 3: LOADING STATE -->
+<div id="moment-loading" class="moment">
+  <div id="loading-lines"></div>
 </div>
 
 <!-- EXCEL TITLE BAR -->
