@@ -183,16 +183,6 @@ function toggleComments(open) {
 
 function showCM(event, id) {
   const cm = CM[id] || cellCommentLookup(id); if (!cm) return;
-  const tip = document.getElementById('ctip');
-  document.getElementById('ctip-auth').textContent = cm.author + ':';
-  document.getElementById('ctip-body').textContent = cm.text;
-
-  const rx = Math.min(event.clientX + 14, window.innerWidth - 300);
-  const ry = Math.min(event.clientY + 14, window.innerHeight - 200);
-  tip.style.left = rx + 'px';
-  tip.style.top = ry + 'px';
-  tip.classList.add('vis');
-
   const card = document.getElementById('card_' + id);
   if (card) {
     card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -200,7 +190,6 @@ function showCM(event, id) {
   }
 }
 function hideCM() {
-  document.getElementById('ctip').classList.remove('vis');
   document.querySelectorAll('.comment-card').forEach(c => c.classList.remove('highlight-flash'));
 }
 function cellCommentLookup(id) {
