@@ -1,9 +1,17 @@
+let _notesGlitchInterval = null;
+
 function renderNotes() {
+  if (_notesGlitchInterval) { clearInterval(_notesGlitchInterval); _notesGlitchInterval = null; }
+
   document.getElementById('grid-container').style.display = 'none';
   const overlay = document.getElementById('notes-overlay');
   overlay.style.display = '';
   overlay.innerHTML = `
     <div class="notes-container">
+      <div class="notes-header">
+        Last modified by: <span class="glitch-name" id="corrupted-name">▒▒▒▒▒▒▒▒▒▒▒▒</span> — 2026-05-18 03:17
+      </div>
+
       <div class="notes-body">
         <p>Well, thank you for making it here, I guess :))</p>
 
@@ -25,12 +33,27 @@ function renderNotes() {
           The next genocide will be carried out not through blood and steel, but through Excel, Word, and PowerPoint.<span class="notes-cursor">|</span>
         </div>
       </div>
-
-      <div class="notes-meta">
-        Last modified: Anh (Vu Trong Duc Anh) — 2026-05-18  03:17
-      </div>
     </div>
   `;
+
+  const glitchEl = document.getElementById('corrupted-name');
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*<>';
+  const nameLength = 22;
+  _notesGlitchInterval = setInterval(() => {
+    let scrambled = '';
+    for (let i = 0; i < nameLength; i++) {
+      if (i === 3 || i === 7 || i === 13 || i === 17) {
+        scrambled += (Math.random() > 0.5) ? ' ' : chars[Math.floor(Math.random() * chars.length)];
+      } else if (i === 4 || i === 21) {
+        scrambled += (Math.random() > 0.5) ? (i === 4 ? '(' : ')') : chars[Math.floor(Math.random() * chars.length)];
+      } else {
+        scrambled += chars[Math.floor(Math.random() * chars.length)];
+      }
+    }
+    glitchEl.textContent = scrambled;
+    glitchEl.style.opacity = Math.random() > 0.92 ? '0.4' : '1';
+  }, 50);
+
   document.getElementById('fcell').value = '';
   document.getElementById('fcontent').textContent = '';
   document.getElementById('sl').textContent = 'Ready';

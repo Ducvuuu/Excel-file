@@ -901,16 +901,23 @@ tr.row-sticky-9 th.rh { position: sticky; top: 37px; left: 0; z-index: 20 !impor
   letter-spacing: 0.01em;
 }
 .notes-body p { margin-bottom: 24px; }
-.notes-meta {
+.notes-header {
   width: 100%;
   max-width: 680px;
-  font-family: var(--font-xl);
+  margin-bottom: 40px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e0d8;
+  font-family: 'Courier New', monospace;
   font-size: 11px;
-  color: #a0a0a0;
+  color: #888;
+  text-align: right;
+}
+.glitch-name {
+  display: inline-block;
+  min-width: 150px;
+  color: #1a1a1a;
+  font-weight: bold;
   text-align: center;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 16px;
-  letter-spacing: 0.02em;
 }
 .aesthetic-highlight {
   background-color: #fef08a;
