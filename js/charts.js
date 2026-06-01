@@ -530,15 +530,19 @@ function runOpeningSequence() {
 
   const attrAt = 500 + (spanEls.length - 1) * 200 + 900;
   setTimeout(() => { attrEl.style.opacity = '1'; }, attrAt);
+  setTimeout(() => { document.getElementById('quote-btn').classList.add('visible'); }, attrAt + 1000);
+}
 
-  setTimeout(() => {
-    hideMoment('moment-quote', 1000, () => {
-      setTimeout(() => {
-        showMoment('moment-access', 600);
-        setTimeout(revealRedacted, 1200);
-      }, 300);
-    });
-  }, attrAt + 1000 + 4000);
+function advanceFromQuote() {
+  const btn = document.getElementById('quote-btn');
+  btn.style.pointerEvents = 'none';
+  btn.style.opacity = '0';
+  hideMoment('moment-quote', 1000, () => {
+    setTimeout(() => {
+      showMoment('moment-access', 600);
+      setTimeout(revealRedacted, 1200);
+    }, 300);
+  });
 }
 
 function revealRedacted() {

@@ -107,6 +107,26 @@ body {
   opacity: 0;
   transition: opacity 1s ease;
 }
+#quote-btn {
+  margin-top: 52px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.38);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 15px;
+  font-style: italic;
+  letter-spacing: 0.1em;
+  padding: 9px 32px;
+  border-radius: 2px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 1.2s ease, color 0.4s ease, border-color 0.4s ease;
+}
+#quote-btn:hover {
+  color: rgba(255,255,255,0.72);
+  border-color: rgba(255,255,255,0.38);
+}
+#quote-btn.visible { opacity: 1; }
 
 /* ── MOMENT 2: WIN11 MODAL ── */
 #moment-access {
