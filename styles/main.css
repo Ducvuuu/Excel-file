@@ -65,18 +65,23 @@ body {
   display: flex;
   opacity: 1;
   pointer-events: auto;
-  background: radial-gradient(ellipse at 50% 46%, #1d1b1b 0%, #080808 72%);
-  padding: 60px;
+  background: #0a0a0a;
+  padding: 0;
+}
+#quote-inner {
+  max-width: 768px;
+  width: 100%;
+  padding: 0 32px;
+  text-align: left;
 }
 #quote-words {
   font-family: 'EB Garamond', Georgia, serif;
-  font-size: 22px;
-  line-height: 1.9;
-  color: #d8d8d8;
-  width: 90%;
-  max-width: 560px;
-  text-align: center;
-  letter-spacing: 0.01em;
+  font-size: 26px;
+  line-height: 1.75;
+  color: #d1d5db;
+  width: 100%;
+  text-align: left;
+  letter-spacing: 0.025em;
 }
 .qw {
   opacity: 0;
@@ -88,43 +93,47 @@ body {
 .qw-bold {
   font-weight: 600;
   color: #ffffff;
-  text-shadow: 0 0 14px rgba(255,255,255,0.4);
+  text-shadow: 0 0 12px rgba(255,255,255,0.6);
 }
-.qw-italic { font-style: italic; color: #f0f0f0; }
+.qw-italic { font-style: italic; color: #f3f4f6; }
 .qw-under {
   text-decoration: underline;
-  text-decoration-color: rgba(255,255,255,0.3);
+  text-decoration-color: #6b7280;
   text-underline-offset: 5px;
   text-decoration-thickness: 1px;
 }
 #quote-attr {
   font-family: 'EB Garamond', Georgia, serif;
-  font-size: 15px;
+  font-size: 18px;
   font-style: italic;
-  color: #585858;
-  margin-top: 36px;
-  text-align: center;
+  color: #6b7280;
+  margin-top: 32px;
+  text-align: left;
   opacity: 0;
   transition: opacity 1s ease;
 }
 #quote-btn {
-  margin-top: 52px;
+  display: block;
+  margin-top: 64px;
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.18);
-  color: rgba(255,255,255,0.38);
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 15px;
-  font-style: italic;
-  letter-spacing: 0.1em;
-  padding: 9px 32px;
+  border: 1px solid rgba(55,65,81,0.5);
+  color: #6b7280;
+  font-family: 'Inter', 'Calibri', 'Segoe UI', sans-serif;
+  font-size: 11px;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  padding: 12px 32px;
   border-radius: 2px;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 1.2s ease, color 0.4s ease, border-color 0.4s ease;
+  transition: opacity 1.2s ease, color 0.5s ease, border-color 0.5s ease, background-color 0.5s ease;
+  outline: none;
 }
 #quote-btn:hover {
-  color: rgba(255,255,255,0.72);
-  border-color: rgba(255,255,255,0.38);
+  color: #e5e7eb;
+  border-color: #9ca3af;
+  background-color: rgba(255,255,255,0.05);
 }
 #quote-btn.visible { opacity: 1; }
 
