@@ -872,6 +872,15 @@ tr.row-sticky-9 th.rh { position: sticky; top: 37px; left: 0; z-index: 20 !impor
   line-height: 1.8;
   color: #1a1a1a;
   max-width: 640px;
+  width: 100%;
+  outline: none;
+  caret-color: #1a1a1a;
+}
+.notes-body:empty::before {
+  content: attr(data-placeholder);
+  color: #aaaaaa;
+  font-style: italic;
+  pointer-events: none;
 }
 
 /* Custom Scrollbars */
