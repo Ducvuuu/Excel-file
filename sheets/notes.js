@@ -1,24 +1,36 @@
-let _notesContent = '';
-
 function renderNotes() {
   document.getElementById('grid-container').style.display = 'none';
   const overlay = document.getElementById('notes-overlay');
   overlay.style.display = '';
   overlay.innerHTML = `
     <div class="notes-container">
-      <div class="notes-meta">
-        Last modified: [unknown user] — 2025-01-15  03:17
+      <div class="notes-body">
+        <p>Well, thank you for making it here, I guess :))</p>
+
+        <p>I planned to make an extensive essay here actually, arguing that the next kind of genocide, arguably already happening right now, won't be carried out through outright killing and eliminating the living, but by <span class="aesthetic-bold">creating the conditions where the would-be people could never be born</span>: poverty, terrible living conditions, the non-existence of hospitals and other critical health infrastructure... Thanks to the newly found capacity of the modern bureaucratic state: the ability to project the future through <span class="aesthetic-highlight">demographic modelling, like what this hypothetical spreadsheet is doing right now</span>, and more importantly, the continuity, with sufficient political will, to sustain that effort for a long, long time, across years and many decades.</p>
+
+        <p>Genocide is easy to spot when it happens in a graphic way. But this, I don't even know what to call it. Social engineering? Demographic engineering? <span class="aesthetic-bold">The result is pretty much the same at the end: the erasure of a community, a culture, a way of life</span>, along with the disappearance of the people who carried them.</p>
+
+        <p>And even if it's not outright murder causing the suffering, does that make it more morally acceptable? Less evil? Not to me. Maybe this is just the archivist/anthropologist/sociologist in me speaking, but human society and culture are wonderful, and I have this burning desire to know all of it. Or to quote someone whose name I've forgotten: a sociologist's curiosity to <em>"look into people's closed doors to see what's inside."</em> (I genuinely think this every time I see a closed door, like an intrusive thought :))</p>
+
+        <p>So beside my own empathy and humanity, the knowledge of a group of people's language, culture, way of life feels sacred to me. Not in the sense of a cold-blooded researcher treating society as a subject of study, with absolute objectivity, but something closer to an ethnologist. Maybe even more than that: a burning desire to devour what's on their mind, what's inside their "internal universe," the mundane things: how a father loves his child, how they do groceries, what their worldview is. Because think about it: we humans are the only species with such a thing. <span class="aesthetic-highlight">An internal world forever unknown to the outer universe</span>, remaining so until the end of time, across all the unimaginable vastness of space, and yet ordinary, small, weak humans still contain such a miracle.</p>
+
+        <p>Hence it is such a crime to erase that heritage from the Earth in any way, regardless of the means. Maybe that's why I made this. Just a small act of trying to stop something inevitable. But am I selfish for that?</p>
+
+        <p>Anyway. The wonderful thing about creating something yourself is that you don't really have to justify it, no citations, no defending your points, because this creation is my world, and I don't need to justify it in any way. I guess :))</p>
+
+        <p>Just remember this, source: trust me :)):</p>
+
+        <div class="aesthetic-quote">
+          The next genocide will be carried out not through blood and steel, but through Excel, Word, and PowerPoint.<span class="notes-cursor">|</span>
+        </div>
       </div>
-      <div class="notes-body"
-           id="notes-body-content"
-           contenteditable="true"
-           spellcheck="true"
-           data-placeholder="[Author note pending — content to be inserted manually]"></div>
+
+      <div class="notes-meta">
+        Last modified: Anh (Vu Trong Duc Anh) — 2026-05-18  03:17
+      </div>
     </div>
   `;
-  const body = document.getElementById('notes-body-content');
-  if (_notesContent) body.innerHTML = _notesContent;
-  body.addEventListener('input', () => { _notesContent = body.innerHTML; });
   document.getElementById('fcell').value = '';
   document.getElementById('fcontent').textContent = '';
   document.getElementById('sl').textContent = 'Ready';

@@ -848,39 +848,81 @@ tr.row-sticky-9 th.rh { position: sticky; top: 37px; left: 0; z-index: 20 !impor
 /* ── SLATE / NOTES SCREEN ── */
 .notes-container {
   background: #ffffff;
-  padding: 60px 80px;
+  padding: 80px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
   height: 100%;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.02);
 }
+.notes-container::-webkit-scrollbar { width: 8px; }
+.notes-container::-webkit-scrollbar-track { background: transparent; }
+.notes-container::-webkit-scrollbar-thumb { background: #dcdcdc; border-radius: 4px; }
+.notes-container::-webkit-scrollbar-thumb:hover { background: #c0c0c0; }
+.notes-body {
+  width: 100%;
+  max-width: 680px;
+  min-height: 50vh;
+  margin-bottom: 40px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.85;
+  color: #2c2c2c;
+  letter-spacing: 0.01em;
+}
+.notes-body p { margin-bottom: 24px; }
 .notes-meta {
   width: 100%;
-  max-width: 640px;
+  max-width: 680px;
   font-family: var(--font-xl);
-  font-size: 9px;
-  color: #888888;
-  text-align: left;
-  border-bottom: 1px solid #d0d0d0;
-  padding-bottom: 6px;
-  margin-bottom: 24px;
+  font-size: 11px;
+  color: #a0a0a0;
+  text-align: center;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 16px;
+  letter-spacing: 0.02em;
 }
-.notes-body {
-  font-family: var(--font-serif);
-  font-size: 14px;
-  line-height: 1.8;
+.aesthetic-highlight {
+  background-color: #fef08a;
+  padding: 2px 6px;
+  border-radius: 4px;
   color: #1a1a1a;
-  max-width: 640px;
-  width: 100%;
-  outline: none;
-  caret-color: #1a1a1a;
 }
-.notes-body:empty::before {
-  content: attr(data-placeholder);
-  color: #aaaaaa;
-  font-style: italic;
-  pointer-events: none;
+.aesthetic-bold {
+  font-weight: 600;
+  color: #111111;
+}
+.aesthetic-quote {
+  background-color: #fdfbf7;
+  border: 1px solid #e5e0d8;
+  border-radius: 8px;
+  padding: 32px 40px;
+  margin-top: 40px;
+  margin-bottom: 16px;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #1a1a1a;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.aesthetic-quote:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.03);
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.notes-cursor {
+  animation: blink 1s step-end infinite;
+  color: #888888;
+  font-family: 'Courier New', monospace;
+  font-weight: normal;
+  margin-left: 4px;
 }
 
 /* Custom Scrollbars */
